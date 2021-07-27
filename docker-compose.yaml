@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql
+    restart: always
+    env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+    ports:
+      - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+    volumes:
+      - db-config:/etc/mysql
+      - db-data:/var/lib/mysql
+      - ./db/backup/files/:/data_backup/data
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
+  mongo:
+    image: mongo
+    environment:
+        - MONGO_INITDB_ROOT_USERNAME=$MONGO_ROOT_USER
+        - MONGO_INITDB_ROOT_PASSWORD=$MONGO_ROOT_PASSWORD
+    ports:
+      - $MONGO_LOCAL_PORT:$MONGO_LOCAL_PORT
+    command: mongod --port $MONGO_LOCAL_PORT --auth
+  mongo-express:
+      image: mongo-express
+      environment:
+          ME_CONFIG_MONGODB_ADMINUSERNAME: $MONGO_ROOT_USER
+          ME_CONFIG_MONGODB_ADMINPASSWORD: $MONGO_ROOT_PASSWORD
+      depends_on:
+          - mongo
+      ports:
+        - $MONGO_DOCKER_PORT:$MONGO_DOCKER_PORT
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    image: localpayment-node-app
+    env_file: ./.env
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    depends_on:
+      - mysqldb
+    stdin_open: true
+    tty: true
+  appp:
+    build:
+      context: .
+      dockerfile: ./src/Dockerfile
+    image: localpayment-python-app
+    env_file: ./.env
+    ports:
+      - $PYTHON_LOCAL_PORT:$PYTHON_DOCKER_PORT
+    volumes:
+      - ./src:/src
+    depends_on:
+      - mongo-express
+    stdin_open: true
+    tty: true
+
+volumes:
+  db-config:
+  db-data:
