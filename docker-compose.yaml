@@ -4,6 +4,7 @@ services:
   mysqldb:
     image: mysql
     restart: always
+    container_name: mysql-server
     env_file: ./.env
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
@@ -15,25 +16,49 @@ services:
       - db-data:/var/lib/mysql
       - ./db/backup/files/:/data_backup/data
     cap_add:
-      - SYS_NICE # CAP_SYS_NICE
-  mongo:
+      - SYS_NICE
+  # mongodb:
+  #   image: mongo
+  #   restart: always
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: $MONGO_ROOT_USER
+  #     MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
+  #     MONGO_INITDB_DATABASE: localpayment_db
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - mongodb:/data/db
+  #     - mongodb:/data/configdb
+  mongodb:
     image: mongo
-    environment:
-        - MONGO_INITDB_ROOT_USERNAME=$MONGO_ROOT_USER
-        - MONGO_INITDB_ROOT_PASSWORD=$MONGO_ROOT_PASSWORD
+    container_name: mongo-server
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_ROOT_USER
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
+      MONGO_INITDB_DATABASE: localpayment_db
+
     ports:
       - $MONGO_LOCAL_PORT:$MONGO_LOCAL_PORT
     command: mongod --port $MONGO_LOCAL_PORT --auth
+    volumes:
+      - mongodb:/data/db
+      - mongodb:/data/configdb
   mongo-express:
-      image: mongo-express
-      environment:
-          ME_CONFIG_MONGODB_ADMINUSERNAME: $MONGO_ROOT_USER
-          ME_CONFIG_MONGODB_ADMINPASSWORD: $MONGO_ROOT_PASSWORD
-      depends_on:
-          - mongo
-      ports:
-        - $MONGO_DOCKER_PORT:$MONGO_DOCKER_PORT
-  app:
+    image: mongo-express
+    environment:
+       ME_CONFIG_MONGODB_SERVER: mongo-server
+       ME_CONFIG_MONGODB_PORT: $MONGO_LOCAL_PORT
+      #  ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      #  ME_CONFIG_MONGODB_AUTH_DATABASE: root
+       ME_CONFIG_MONGODB_ADMINUSERNAME: $MONGO_ROOT_USER
+       ME_CONFIG_MONGODB_ADMINPASSWORD: $MONGO_ROOT_PASSWORD
+       ME_CONFIG_BASICAUTH_USERNAME: $MONGO_ROOT_USER
+       ME_CONFIG_BASICAUTH_PASSWORD: $MONGO_ROOT_PASSWORD
+    depends_on:
+      - mongodb
+    ports:
+      - $MONGO_DOCKER_PORT:$MONGO_DOCKER_PORT
+  node_app:
     build:
       context: .
       dockerfile: ./app/Dockerfile
@@ -48,7 +73,7 @@ services:
       - mysqldb
     stdin_open: true
     tty: true
-  appp:
+  python_app:
     build:
       context: .
       dockerfile: ./src/Dockerfile
@@ -64,5 +89,6 @@ services:
     tty: true
 
 volumes:
+  mongodb:
   db-config:
   db-data:
