@@ -1,5 +1,5 @@
 const { QueryTypes } = require('sequelize');
-const sequelize = require('../dB/sequelize');
+const sequelize = require('../dBs/sequelize');
 
 const getUserAvailability = async (doc_number) => {
   const available = await sequelize.query(
