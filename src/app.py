@@ -3,6 +3,7 @@ from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from bson import json_util
 from bson.objectid import ObjectId
+import http.client
 
 import json
 
@@ -22,30 +23,41 @@ def get_all_trx():
 
 @app.route('/trx/newtrx', methods=['POST'])
 def create_new_trx():
-    if not request.json['user'] or request.json['feature'] or request.json['amount']:
+    if not request.json['user'] and request.json['feature'] and request.json['amount']:
         return bad_request("please check the json")
 
     user = request.json['user']
     feature = request.json['feature']
     amount = request.json['amount']
 
-    if feature != 'PAYIN' and feature != 'PAYOUT':
-        return bad_request("only PAYIN or PAYOUT allowed as feature")
-    if user and feature and amount:
-        trx = mongo.db.localpayment_db.insert({
-            'user': user,
-            'feature': feature,
-            'amount': amount
-        })
-        response = {
-            'trx_number': str(trx),
-            'type': feature,
-            'amount': amount,
-            'by': user
-        }
-        return response
+    conn = http.client.HTTPConnection(
+        "http://localhost:3000")
+
+    conn.request('GET', f'/user/{user}')
+
+    req = conn.getresponse()
+    # req = urllib.request.urlopen(f"http://localhost:3000/user/{user}")
+    print(req)
+    if req:
+        if feature != 'PAYIN' and feature != 'PAYOUT':
+            return bad_request("only PAYIN or PAYOUT allowed as feature")
+        if user and feature and amount:
+            trx = mongo.db.localpayment_db.insert({
+                'user': user,
+                'feature': feature,
+                'amount': amount
+            })
+            response = {
+                'trx_number': str(trx),
+                'type': feature,
+                'amount': amount,
+                'by': user
+            }
+            return response
+        else:
+            return bad_request("something is missing, please check the JSON format")
     else:
-        return bad_request("something is missing, please check the JSON format")
+        return not_found("user doesn't exist")
 
 
 @app.route('/trx/balance/<user>', methods=['GET'])
@@ -72,9 +84,9 @@ def delete_all_user_records(id):
 
 
 @app.errorhandler(404)
-def not_found(error=None):
+def not_found(text):
     message = {
-        'message': 'Resource Not Found ' + request.url,
+        'message': f'Resource Not Found, {text} ',
         'status': 404
     }
     response = jsonify(message)
@@ -94,4 +106,4 @@ def bad_request(text):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)

@@ -1,9 +1,8 @@
 require('dotenv').config();
-require('./db/sequelize');
 const router = require('./routes/routes');
 const express = require('express'),
   app = express();
-const sequelize = require('./dB/sequelize');
+const sequelize = require('./dBs/sequelize');
 const displayRoutes = require('express-routemap');
 const port = process.env.NODEJS_LOCAL_PORT || 3000;
 
