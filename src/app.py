@@ -3,6 +3,7 @@ from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from bson import json_util
 from bson.objectid import ObjectId
+import requests
 import http.client
 
 import json
@@ -30,14 +31,8 @@ def create_new_trx():
     feature = request.json['feature']
     amount = request.json['amount']
 
-    conn = http.client.HTTPConnection(
-        "http://localhost:3000")
+    req = requests.get(f'http://localpayment_node_app_1:3000/user/{user}')
 
-    conn.request('GET', f'/user/{user}')
-
-    req = conn.getresponse()
-    # req = urllib.request.urlopen(f"http://localhost:3000/user/{user}")
-    print(req)
     if req:
         if feature != 'PAYIN' and feature != 'PAYOUT':
             return bad_request("only PAYIN or PAYOUT allowed as feature")
@@ -62,16 +57,23 @@ def create_new_trx():
 
 @app.route('/trx/balance/<user>', methods=['GET'])
 def get_all_trx_by_user(user):
-    user_data = mongo.db.localpayment_db.find({'user': int(user), })
-    balance = 0
-    for data in user_data:
-        balance += data['amount']
-    print(balance)
-    response = {
-        "user": user,
-        "balance": balance
-    }
-    return response
+
+    req = requests.get(f'http://localpayment_node_app_1:3000/user/{user}')
+
+    if req:
+        user_data = mongo.db.localpayment_db.find({'user': int(user), })
+        balance = 0
+        for data in user_data:
+            balance += data['amount']
+        print(balance)
+        response = {
+            "user": user,
+            "balance": balance
+        }
+        return response
+    else:
+        return not_found("user doesn't exist")
+
 
 
 @app.route('/trx/<id>', methods=['DELETE'])
