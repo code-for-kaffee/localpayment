@@ -5,6 +5,12 @@ const { getUserAvailability } = require('../middleware/utilities');
 const registerUser = async (req, res) => {
   try {
     const { name, doc_number } = req.body;
+    console.log(name, doc_number);
+    if (name === undefined || doc_number === undefined) {
+      throw res
+        .status(400)
+        .send({ error: 'Missing data, please check the JSON' });
+    }
     await getUserAvailability(doc_number).then(async (available) => {
       if (available) {
         await register(name, doc_number).catch((err) => {
@@ -63,7 +69,7 @@ const getAllUsers = async (req, res) => {
     const users = await sequelize.query(`SELECT * FROM users`, {
       type: QueryTypes.SELECT,
     });
-    res.status(201).send(users);
+    res.status(200).send(users);
   } catch (error) {
     throw res.status(204).send({ error: 'There are no users in this dB!' });
   }

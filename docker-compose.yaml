@@ -24,7 +24,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: $MONGO_ROOT_USER
       MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
       MONGO_INITDB_DATABASE: localpayment_db
-
     ports:
       - $MONGO_LOCAL_PORT:$MONGO_LOCAL_PORT
     command: mongod --port $MONGO_LOCAL_PORT --auth
@@ -44,11 +43,11 @@ services:
       - mongodb
     ports:
       - $MONGO_DOCKER_PORT:$MONGO_DOCKER_PORT
-  node_app:
+  localpayment-node-app:
     build:
       context: .
       dockerfile: ./app/Dockerfile
-    image: localpayment-node-app
+    image: node
     env_file: ./.env
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
@@ -58,14 +57,14 @@ services:
     depends_on:
       - mysqldb
     links:
-      - python_app
+      - localpayment-python-app
     stdin_open: true
     tty: true
-  python_app:
+  localpayment-python-app:
     build:
       context: .
       dockerfile: ./src/Dockerfile
-    image: localpayment-python-app
+    image: python
     env_file: ./.env
     ports:
       - $PYTHON_LOCAL_PORT:$PYTHON_DOCKER_PORT
@@ -79,6 +78,3 @@ volumes:
   mongodb:
   db-config:
   db-data:
-networks:
-  default:
-    driver: bridge
