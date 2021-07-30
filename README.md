@@ -165,8 +165,10 @@ En el endpoint `/user/:doc_number` tenemos 3 peticiones diferentes
 
 El endpoint `/trx/newtrx` recibe una peticion del tipo `POST` es utilizado para crear una nueva transaccion para eso se comunica con el servicio de `http://localhost:3000/api/v1/user/:doc_number` para verificar que exista el usuario a cargar la transaccion
 
-{
-    "user": 87654321,
-    "feature": "PAYIN",
-    "amount": 1234
-}
+```
+    {
+        "user": 87654321,
+        "feature": "PAYIN",
+        "amount": 1234
+    }
+```
