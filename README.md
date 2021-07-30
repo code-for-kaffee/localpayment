@@ -297,3 +297,4 @@ El endpoint `/transactions/:transaction_id` espera recibir una peticion del tipo
             {
                 "message": "transaction 61037622158d17ee96866b10 Deleted Successfully"
             }
+            ```
