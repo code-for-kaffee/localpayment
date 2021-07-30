@@ -73,10 +73,9 @@ def get_all_trx_by_user(user):
             balance = 0
             for data in user_data:
                 balance += data['amount']
-            print(balance)
             response = {
                 "user": user,
-                "balance": balance
+                "balance": float("{:.2f}".format(balance))
             }
             return response
         else:
@@ -88,7 +87,7 @@ def get_all_trx_by_user(user):
 def delete_all_user_records(id):
     try:
         mongo.db.localpayment_db.delete_one({'_id': ObjectId(id)})
-        response = jsonify({'message': 'transaction' +
+        response = jsonify({'message': 'transaction ' +
                         id + ' Deleted Successfully'})
         response.status_code = 200
         return response
