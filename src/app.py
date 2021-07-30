@@ -27,62 +27,72 @@ def get_all_trx():
 
 @app.route(f'/{version}/transactions', methods=['POST'])
 def create_new_trx():
-    try:
-        if not request.json['user'] and request.json['feature'] and request.json['amount']:
-            return bad_request("please check the json")
+    if not request.json['user'] and request.json['feature'] and request.json['amount']:
+        return bad_request("please check the json")
 
-        user = request.json['user']
-        feature = request.json['feature']
-        amount = request.json['amount']
+    user = request.json['user']
+    feature = request.json['feature']
+    amount = request.json['amount']
 
-        req = requests.get(
-            f'http://localpayment_node_app_1:3000/{version}/user/{user}')
+    req = requests.get(
+        f'http://localpayment_node_app_1:3000/{version}/user/{user}')
+    print(req)
 
-        if req:
-            if feature != 'PAYIN' and feature != 'PAYOUT':
-                return bad_request("only PAYIN or PAYOUT allowed as feature")
-            if user and feature and amount:
-                trx = mongo.db.localpayment_db.insert({
-                    'user': user,
-                    'feature': feature,
-                    'amount': amount
-                })
-                response = jsonify({
-                    'trx_number': str(trx),
-                    'type': feature,
-                    'amount': amount,
-                    'by': user
-                })
-                response.status_code = 201
-                return response
-            else:
-                return bad_request("something is missing, please check the JSON format")
+    if req:
+        if feature != 'PAYIN' and feature != 'PAYOUT':
+            return bad_request("only PAYIN or PAYOUT allowed as feature")
+        if user and feature and amount:
+            trx = mongo.db.localpayment_db.insert({
+                'user': user,
+                'feature': feature,
+                'amount': amount
+            })
+            response = jsonify({
+                'trx_number': str(trx),
+                'type': feature,
+                'amount': amount,
+                'by': user
+            })
+            response.status_code = 201
+            return response
         else:
-            return not_found("user doesn't exist")
-    except:
-        return server_error()
+            return bad_request("something is missing, please check the JSON format")
+    else:
+        return not_found("user doesn't exist")
 
 
 @app.route(f'/{version}/transactions/balance/<user>', methods=['GET'])
-def get_all_trx_by_user(user):
-    try:
-        req = requests.get(
-            f'http://localpayment_node_app_1:3000/{version}/user/{user}')
+def get_user_balance(user):
+    req = requests.get(
+        f'http://localpayment_node_app_1:3000/{version}/user/{user}')
 
-        if req:
-            user_data = mongo.db.localpayment_db.find({'user': int(user), })
-            balance = 0
-            for data in user_data:
+    if req:
+        user_data = mongo.db.localpayment_db.find({'user': int(user), })
+        balance = 0
+        for data in user_data:
+            if data['feature'] == 'PAYIN':
                 balance += data['amount']
-            response = {
-                "user": user,
-                "balance": float("{:.2f}".format(balance))
-            }
-            return response
-        else:
-            return not_found("user doesn't exist")
-    except:
-        return server_error()
+            else:
+                balance -= data['amount'] 
+        response = {
+            "user": user,
+            "balance": float("{:.2f}".format(balance))
+        }
+        return response
+    else:
+        return not_found("user doesn't exist")
+
+@app.route(f'/{version}/transactions/<user>', methods=['GET'])
+def get_all_trx_by_user(user):
+    req = requests.get(
+        f'http://localpayment_node_app_1:3000/{version}/user/{user}')
+
+    if req:
+        user_data = mongo.db.localpayment_db.find({'user': int(user), })
+        response = json_util.dumps(user_data)
+        return Response(response, mimetype='application/json')
+    else:
+        return not_found("user doesn't exist")
 
 
 @app.route(f'/{version}/transactions/<id>', methods=['DELETE'])

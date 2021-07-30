@@ -155,20 +155,145 @@ En el endpoint `/user/:doc_number` tenemos 3 peticiones diferentes
 
             ```
 
-> `http://localhost:5000/` para **Trx**
+> `http://localhost:5000/` para **Transactions**
 > donde vamos a encontrar los diferentes endpoints:
 >
-> - `POST` -> http://localhost:3000/api/v1/trx/newtrx
-> - `GET` -> http://localhost:3000/api/v1/trx/
-> - `GET` -> http://localhost:3000/api/v1/trx/balance/:doc_number
-> - `DELETE` -> http://localhost:3000/api/v1/trx/:doc_number
+> - `POST` -> http://localhost:3000/api/v1/transactions
+> - `GET` -> http://localhost:3000/api/v1/transactions/
+> - `GET` -> http://localhost:3000/api/v1/transactions/balance/:doc_number
+> - `GET` -> http://localhost:3000/api/v1/transactions/:doc_number
+> - `DELETE` -> http://localhost:3000/api/v1/transactions/:transaction_id
 
-El endpoint `/trx/newtrx` recibe una peticion del tipo `POST` es utilizado para crear una nueva transaccion para eso se comunica con el servicio de `http://localhost:3000/api/v1/user/:doc_number` para verificar que exista el usuario a cargar la transaccion
+El endpoint `/transactions/` recibe dos peticiones
 
-```
-    {
-        "user": 87654321,
-        "feature": "PAYIN",
-        "amount": 1234
-    }
-```
+1.  `POST` es utilizado para crear una nueva transaccion para eso se comunica con el servicio de `http://localhost:3000/api/v1/user/:doc_number` para verificar que exista el usuario a cargar la transaccion
+
+            ```
+                Body:
+
+                {
+                "user": 87654321,
+                "feature": "PAYIN",
+                "amount": 123442.85
+                }
+
+                Response:
+
+                Status: 201
+
+                {
+                "amount": 123442.85,
+                "by": 87654321,
+                "trx_number": "61037e88158d17ee96866b11",
+                "type": "PAYIN"
+                }
+
+            ```
+
+        En caso que el usuario no exista en la base de datos se mostrara la siguiente respuesta
+
+            ```
+                Body:
+
+                {
+                "user": 1234,
+                "feature": "PAYIN",
+                "amount": 123442.85
+                }
+
+                Response:
+                Status:404
+
+                {
+                "message": "Resource Not Found, user doesn't exist ",
+                "status": 404
+                }
+
+            ```
+
+2.  `GET` nos devuelve todos las transacciones registradas en la base de datos
+            ```
+            Response:
+            Status: 200
+            [
+                {
+                    "_id": {
+                        "$oid": "610373183cce75ae25a80d1a"
+                    },
+                    "user": 87654321,
+                    "feature": "PAYIN",
+                    "amount": 1234.85
+                },
+                {
+                    "_id": {
+                        "$oid": "610374d66722035e6364e566"
+                    },
+                    "user": 87654321,
+                    "feature": "PAYIN",
+                    "amount": 56.85
+                }
+            ]
+            ```
+
+El endpoint `/transactions/balance/:doc_number` espera recibir una peticion del tipo `GET` y recibe por parametro el numero de documento y realiza una peticion al servicio de `http://localhost:3000/api/v1/user/:doc_number` para verificar que exista el cliente. 
+
+Este endpoint es utilizado para saber el balance total del usuario.
+
+            ```
+            Response:
+            Status: 200
+            {
+                "balance": 0.0,
+                "user": "87654321"
+            }
+            ```
+En caso de que no exista el usuario tendremos la siguiente respuesta
+            ```
+            Response:
+            Status: 404
+            {
+                "message": "Resource Not Found, user doesn't exist ",
+                "status": 404
+            }
+            ```
+El endpoint `/transactions/:doc_number` espera recibir una peticion del tipo `GET` y recibe por parametro el numero de documento y realiza una peticion al servicio de `http://localhost:3000/api/v1/user/:doc_number` para verificar que exista el cliente. 
+
+Este endpoint es utilizado para conocer el historial de transacciones del usuario.
+
+            ```
+            [
+                {
+                    "_id": {
+                        "$oid": "610393098c5742a60c1364ca"
+                    },
+                    "user": 87654321,
+                    "feature": "PAYIN",
+                    "amount": 123442.85
+                },
+                {
+                    "_id": {
+                        "$oid": "610394029ba30b5ed35b1e56"
+                    },
+                    "user": 87654321,
+                    "feature": "PAYIN",
+                    "amount": 12.85
+                },
+                {
+                    "_id": {
+                        "$oid": "610394069ba30b5ed35b1e57"
+                    },
+                    "user": 87654321,
+                    "feature": "PAYIN",
+                    "amount": 12.854
+                }
+            ]
+            ```
+
+
+El endpoint `/transactions/:transaction_id` espera recibir una peticion del tipo `DELETE` y recibe por parametro el numero de transaccion
+            ```
+            Reponse:
+            Status: 200
+            {
+                "message": "transaction 61037622158d17ee96866b10 Deleted Successfully"
+            }
