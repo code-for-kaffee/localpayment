@@ -64,26 +64,24 @@ Ese comando nos va a instalar las dependencias necesarias, en este caso vamos a 
 El endpoint `/register` recibe una peticion del tipo `POST` es utilizado para crear un nuevo usuario.
 Espera recibir un nombre y un numero de documento en caso de que falte uno de los dos datos se recibira un mensaje de error indicando que falta completar datos.
 
-```
+    ```
 
-Body JSON:
+    Body JSON:
 
-{
-    "name": "Anakin Skywalker",
-    "doc_number": 12345678
-}
+    {
+        "name": "Anakin Skywalker",
+        "doc_number": 12345678
+    }
 
-Response:
+    Response:
 
-Status: 201
-{
-    "code": "OK",
-    "message": "user sucesfully registered"
-}
+    Status: 201
+    {
+        "code": "OK",
+        "message": "user sucesfully registered"
+    }
 
-```
-
-Este endpoint
+    ```
 
 El endpoint `/users` espera recibir una peticion tipo `GET` para devolver todos los usuarios registrados en la base de datos.
 
@@ -212,6 +210,7 @@ El endpoint `/transactions/` recibe dos peticiones
             ```
 
 2.  `GET` nos devuelve todos las transacciones registradas en la base de datos
+
             ```
             Response:
             Status: 200
@@ -247,7 +246,9 @@ Este endpoint es utilizado para saber el balance total del usuario.
                 "user": "87654321"
             }
             ```
+
 En caso de que no exista el usuario tendremos la siguiente respuesta
+
             ```
             Response:
             Status: 404
@@ -256,6 +257,7 @@ En caso de que no exista el usuario tendremos la siguiente respuesta
                 "status": 404
             }
             ```
+
 El endpoint `/transactions/:doc_number` espera recibir una peticion del tipo `GET` y recibe por parametro el numero de documento y realiza una peticion al servicio de `http://localhost:3000/api/v1/user/:doc_number` para verificar que exista el cliente. 
 
 Este endpoint es utilizado para conocer el historial de transacciones del usuario.
@@ -289,8 +291,8 @@ Este endpoint es utilizado para conocer el historial de transacciones del usuari
             ]
             ```
 
-
 El endpoint `/transactions/:transaction_id` espera recibir una peticion del tipo `DELETE` y recibe por parametro el numero de transaccion
+
             ```
             Reponse:
             Status: 200
