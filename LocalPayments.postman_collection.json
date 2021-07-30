@@ -34,7 +34,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Anakin Skywalker\",\r\n    \"doc_number\": 87654321\r\n}",
+							"raw": "{\r\n    \"name\": \"Princess Leia\",\r\n    \"doc_number\": 12345678\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -53,7 +53,70 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Register User",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Princess Leia\",\r\n    \"doc_number\": 12345678\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/{{version}}/register",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"{{version}}",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "52"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"34-DUt6maoTHTPJ81gINq9T0NUn54s\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:48:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": \"OK\",\n    \"message\": \"user sucesfully registered\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Get all user",
@@ -90,7 +153,61 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get all user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/{{version}}/users",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"{{version}}",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "254"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"fe-5wSIltQgb7Q8tlAwN0mXhnq/hBM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:48:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"name\": \"Princess Leia\",\n        \"doc_number\": 12345678,\n        \"createdAt\": \"2021-07-30T00:00:00.000Z\",\n        \"updatedAt\": \"2021-07-30T00:00:00.000Z\"\n    },\n    {\n        \"name\": \"Anakin Skywalker\",\n        \"doc_number\": 87654321,\n        \"createdAt\": \"2021-07-30T00:00:00.000Z\",\n        \"updatedAt\": \"2021-07-30T00:00:00.000Z\"\n    }\n]"
+						}
+					]
 				},
 				{
 					"name": "Get user by doc_number",
@@ -110,7 +227,62 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get user by doc_number",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/{{version}}/user/87654321",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"{{version}}",
+										"user",
+										"87654321"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "129"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"81-u2GIC9qKMyV9KW3VRwA6mu/fLzE\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:48:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"name\": \"Anakin Skywalker\",\n        \"doc_number\": 87654321,\n        \"createdAt\": \"2021-07-30T00:00:00.000Z\",\n        \"updatedAt\": \"2021-07-30T00:00:00.000Z\"\n    }\n]"
+						}
+					]
 				},
 				{
 					"name": "Delete user by doc_number",
@@ -137,7 +309,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/{{version}}/user/87654321",
+							"raw": "localhost:3000/{{version}}/user/37752397",
 							"host": [
 								"localhost"
 							],
@@ -145,12 +317,67 @@
 							"path": [
 								"{{version}}",
 								"user",
-								"87654321"
+								"37752397"
 							]
 						},
 						"description": "Endpoint used to delete user by id"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Delete user by doc_number",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/{{version}}/user/37752397",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"{{version}}",
+										"user",
+										"37752397"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-zr1cRFe/H/z0lGmOxBQooIjl7H0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:48:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User sucessfully deleted\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Update user by doc_number",
@@ -179,7 +406,71 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Update user by doc_number",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Luke Skywalker\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/{{version}}/user/87654321",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"{{version}}",
+										"user",
+										"87654321"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"25-D9/IZjNnyDrsW3f4a8r+0aJ1BZQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:49:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User sucesfully updated\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -203,7 +494,49 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get all trx",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/{{version}}/transactions",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"{{version}}",
+										"transactions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "206"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/2.0.1 Python/3.7.11"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:41:31 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": {\n            \"$oid\": \"610373183cce75ae25a80d1a\"\n        },\n        \"user\": 87654321,\n        \"feature\": \"PAYIN\",\n        \"amount\": 1234.85\n    },\n    {\n        \"_id\": {\n            \"$oid\": \"610374d66722035e6364e566\"\n        },\n        \"user\": 87654321,\n        \"feature\": \"PAYIN\",\n        \"amount\": 56.85\n    }\n]"
+						}
+					]
 				},
 				{
 					"name": "Get user by doc_number",
@@ -224,7 +557,51 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get user by doc_number",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/{{version}}/transactions/balance/87654321",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"{{version}}",
+										"transactions",
+										"balance",
+										"87654321"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/2.0.1 Python/3.7.11"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:46:04 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"balance\": 1291.7,\n    \"user\": \"87654321\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Create Trx",
@@ -244,7 +621,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user\": 87654321,\r\n    \"feature\": \"PAYIN\",\r\n    \"amount\": 1234.85\r\n}",
+							"raw": "{\r\n    \"user\": 87654321,\r\n    \"feature\": \"PAYIN\",\r\n    \"amount\": 123442.85\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -263,7 +640,58 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Create Trx",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user\": 87654321,\r\n    \"feature\": \"PAYIN\",\r\n    \"amount\": 123442.85\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/{{version}}/transactions",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"{{version}}",
+										"transactions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "90"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/2.0.1 Python/3.7.11"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:46:42 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"amount\": 123442.85,\n    \"by\": 87654321,\n    \"trx_number\": \"61037622158d17ee96866b10\",\n    \"type\": \"PAYIN\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Delete trx",
@@ -271,7 +699,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:5000/{{version}}/transactions/?transaction-id",
+							"raw": "127.0.0.1:5000/{{version}}/transactions/61037622158d17ee96866b10",
 							"host": [
 								"127",
 								"0",
@@ -282,17 +710,57 @@
 							"path": [
 								"{{version}}",
 								"transactions",
-								""
-							],
-							"query": [
-								{
-									"key": "transaction-id",
-									"value": null
-								}
+								"61037622158d17ee96866b10"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Delete trx",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "127.0.0.1:5000/{{version}}/transactions/61037622158d17ee96866b10",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "5000",
+									"path": [
+										"{{version}}",
+										"transactions",
+										"61037622158d17ee96866b10"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/2.0.1 Python/3.7.11"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 03:47:28 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"transaction61037622158d17ee96866b10 Deleted Successfully\"\n}"
+						}
+					]
 				}
 			]
 		}
