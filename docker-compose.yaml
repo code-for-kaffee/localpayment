@@ -43,7 +43,7 @@ services:
       - mongodb
     ports:
       - $MONGO_DOCKER_PORT:$MONGO_DOCKER_PORT
-  localpayment-node-app:
+  node_app:
     build:
       context: .
       dockerfile: ./app/Dockerfile
@@ -57,10 +57,10 @@ services:
     depends_on:
       - mysqldb
     links:
-      - localpayment-python-app
+      - python_app
     stdin_open: true
     tty: true
-  localpayment-python-app:
+  python_app:
     build:
       context: .
       dockerfile: ./src/Dockerfile
@@ -78,3 +78,6 @@ volumes:
   mongodb:
   db-config:
   db-data:
+networks:
+  default:
+    driver: bridge

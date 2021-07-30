@@ -12,16 +12,17 @@ app = Flask(__name__)
 mongo = MongoClient(
     "mongodb://root:root@mongo-server:27017/localpayment_db?authSource=admin")
 db = mongo["localpayment_db"]
-version = "/api/v1"
+version = "api/v1"
 
-@app.route(f'{version}/transactions', methods=['GET'])
+
+@app.route(f'/{version}/transactions', methods=['GET'])
 def get_all_trx():
     trxs = mongo.db.localpayment_db.find()
     response = json_util.dumps(trxs)
     return Response(response, mimetype='application/json')
 
 
-@app.route(f'{version}/transactions/newtrx', methods=['POST'])
+@app.route(f'/{version}/transactions', methods=['POST'])
 def create_new_trx():
     if not request.json['user'] and request.json['feature'] and request.json['amount']:
         return bad_request("please check the json")
@@ -30,7 +31,8 @@ def create_new_trx():
     feature = request.json['feature']
     amount = request.json['amount']
 
-    req = requests.get(f'http://localpayment_node_app_1:3000/user/{user}')
+    req = requests.get(
+        f'http://localpayment_node_app_1:3000/{version}/user/{user}')
 
     if req:
         if feature != 'PAYIN' and feature != 'PAYOUT':
@@ -54,10 +56,11 @@ def create_new_trx():
         return not_found("user doesn't exist")
 
 
-@app.route(f'{version}/transactions/balance/<user>', methods=['GET'])
+@app.route(f'/{version}/transactions/balance/<user>', methods=['GET'])
 def get_all_trx_by_user(user):
 
-    req = requests.get(f'http://localpayment_node_app_1:3000/user/{user}')
+    req = requests.get(
+        f'http://localpayment_node_app_1:3000/{version}/user/{user}')
 
     if req:
         user_data = mongo.db.localpayment_db.find({'user': int(user), })
@@ -74,7 +77,7 @@ def get_all_trx_by_user(user):
         return not_found("user doesn't exist")
 
 
-@app.route(f'{version}/transactions/<id>', methods=['DELETE'])
+@app.route(f'/{version}/transactions/<id>', methods=['DELETE'])
 def delete_all_user_records(id):
     mongo.db.localpayment_db.delete_one({'_id': ObjectId(id)})
     response = jsonify({'message': 'transaction' +
@@ -106,4 +109,4 @@ def bad_request(text):
 
 
 if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0',port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)

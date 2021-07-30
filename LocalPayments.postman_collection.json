@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "4895aba9-7fbf-405c-85f1-af3f0711020c",
+		"name": "LocalPayments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User request",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test and response\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.jsonSchema({ \"code\": String, \"message\": String });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Fail test\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"    pm.response.to.have.jsonSchema({ \"error\": String });\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Anakin Skywalker\",\r\n    \"doc_number\": 87654321\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/{{version}}/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"{{version}}",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+									"});\r",
+									"pm.test(\"Response body check\", function () {\r",
+									"    pm.response.to.have.jsonSchema({ \"name\": String, \"doc_number\": Number, \"createdAt\": Date, \"updateAt\": Date });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/{{version}}/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"{{version}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by doc_number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/{{version}}/user/87654321",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"{{version}}",
+								"user",
+								"87654321"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by doc_number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Status code is 409\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/{{version}}/user/87654321",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"{{version}}",
+								"user",
+								"87654321"
+							]
+						},
+						"description": "Endpoint used to delete user by id"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user by doc_number",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Luke Skywalker\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/{{version}}/user/87654321",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"{{version}}",
+								"user",
+								"87654321"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trx request",
+			"item": [
+				{
+					"name": "Get all trx",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/{{version}}/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"{{version}}",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by doc_number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/{{version}}/transactions/balance/87654321",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"{{version}}",
+								"transactions",
+								"balance",
+								"87654321"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Trx",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": 87654321,\r\n    \"feature\": \"PAYIN\",\r\n    \"amount\": 1234.85\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/{{version}}/transactions",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"{{version}}",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete trx",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "127.0.0.1:5000/{{version}}/transactions/?transaction-id",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"{{version}}",
+								"transactions",
+								""
+							],
+							"query": [
+								{
+									"key": "transaction-id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "doc_number",
+			"value": "37752397"
+		},
+		{
+			"key": "version",
+			"value": "/api/v1"
+		}
+	]
+}
