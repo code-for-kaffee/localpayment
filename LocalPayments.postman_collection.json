@@ -34,7 +34,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Princess Leia\"}",
+							"raw": "{\r\n    \"name\": \"Princess Leia\",\r\n    \"doc_number\": 12345678\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -539,7 +539,7 @@
 					]
 				},
 				{
-					"name": "Get user by doc_number",
+					"name": "Get user balance",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -559,7 +559,7 @@
 					},
 					"response": [
 						{
-							"name": "Get user by doc_number",
+							"name": "Get user balance",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -600,6 +600,58 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"balance\": 1291.7,\n    \"user\": \"87654321\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get user history",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": [
+						{
+							"name": "Get user history",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/{{version}}/transactions/87654321",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"{{version}}",
+										"transactions",
+										"87654321"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "311"
+								},
+								{
+									"key": "Server",
+									"value": "Werkzeug/2.0.1 Python/3.7.11"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Jul 2021 06:00:04 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": {\n            \"$oid\": \"610393098c5742a60c1364ca\"\n        },\n        \"user\": 87654321,\n        \"feature\": \"PAYIN\",\n        \"amount\": 123442.85\n    },\n    {\n        \"_id\": {\n            \"$oid\": \"610394029ba30b5ed35b1e56\"\n        },\n        \"user\": 87654321,\n        \"feature\": \"PAYIN\",\n        \"amount\": 12.85\n    },\n    {\n        \"_id\": {\n            \"$oid\": \"610394069ba30b5ed35b1e57\"\n        },\n        \"user\": 87654321,\n        \"feature\": \"PAYIN\",\n        \"amount\": 12.854\n    }\n]"
 						}
 					]
 				},
