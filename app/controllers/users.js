@@ -52,12 +52,12 @@ const deleteUser = async (req, res) => {
           type: QueryTypes.DELETE,
         })
         .then((resp) => {
-          return res.status(201).send({ message: 'User sucessfully deleted' });
+          return res.status(200).send({ message: 'User sucessfully deleted' });
         });
     } else {
-      return res
-        .status(409)
-        .send({ error: 'User doesnt exist, please try with another document' });
+      return res.status(409).send({
+        error: "User doesn't exist, please try with another document number",
+      });
     }
   } catch (error) {
     throw res.status(500).send({ error: 'Unexpected error, try again later' });

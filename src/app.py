@@ -47,12 +47,13 @@ def create_new_trx():
                     'feature': feature,
                     'amount': amount
                 })
-                response = {
+                response = jsonify({
                     'trx_number': str(trx),
                     'type': feature,
                     'amount': amount,
                     'by': user
-                }
+                })
+                response.status_code = 201
                 return response
             else:
                 return bad_request("something is missing, please check the JSON format")
@@ -83,16 +84,18 @@ def get_all_trx_by_user(user):
     except:
         return server_error()
 
+
 @app.route(f'/{version}/transactions/<id>', methods=['DELETE'])
 def delete_all_user_records(id):
     try:
         mongo.db.localpayment_db.delete_one({'_id': ObjectId(id)})
         response = jsonify({'message': 'transaction ' +
-                        id + ' Deleted Successfully'})
+                            id + ' Deleted Successfully'})
         response.status_code = 200
         return response
     except:
         return server_error()
+
 
 @app.errorhandler(404)
 def not_found(text):
@@ -115,6 +118,7 @@ def bad_request(text):
     response.status_code = 400
     return response
 
+
 @app.errorhandler(500)
 def server_error():
     message = {
@@ -124,5 +128,7 @@ def server_error():
     response = jsonify(message)
     response.status_code = 500
     return response
+
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
