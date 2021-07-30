@@ -49,7 +49,7 @@ Ese comando nos va a instalar las dependencias necesarias, en este caso vamos a 
 - MySQL
 - MongoDb
 
-> En este caso la aplicación va a correr en dos puertos diferentes ellos son
+> En este caso la aplicación va a correr en tres puertos diferentes ellos son
 > `http://localhost:3000/` para **Users**
 > donde vamos a encontrar los diferentes endpoints:
 >
@@ -300,3 +300,10 @@ El endpoint `/transactions/:transaction_id` espera recibir una peticion del tipo
                 "message": "transaction 61037622158d17ee96866b10 Deleted Successfully"
             }
             ```
+
+> `http://localhost:8180/` para **Mongo-express**
+> donde vamos a encontrar una interfaz grafica par acceder a la base de datos de transacciones
+> Se accede con el usuario asignado en el archivo .env
+> En este caso 
+> user: root 
+> password: root
