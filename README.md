@@ -156,11 +156,11 @@ En el endpoint `/user/:doc_number` tenemos 3 peticiones diferentes
 > `http://localhost:5000/` para **Transactions**
 > donde vamos a encontrar los diferentes endpoints:
 >
-> - `POST` -> http://localhost:3000/api/v1/transactions
-> - `GET` -> http://localhost:3000/api/v1/transactions/
-> - `GET` -> http://localhost:3000/api/v1/transactions/balance/:doc_number
-> - `GET` -> http://localhost:3000/api/v1/transactions/:doc_number
-> - `DELETE` -> http://localhost:3000/api/v1/transactions/:transaction_id
+> - `POST` -> http://localhost:5000/api/v1/transactions
+> - `GET` -> http://localhost:5000/api/v1/transactions/
+> - `GET` -> http://localhost:5000/api/v1/transactions/balance/:doc_number
+> - `GET` -> http://localhost:5000/api/v1/transactions/:doc_number
+> - `DELETE` -> http://localhost:5000/api/v1/transactions/:transaction_id
 
 El endpoint `/transactions/` recibe dos peticiones
 
